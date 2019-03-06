@@ -1,31 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
+import Loader from 'react-loader-spinner';
 
 import { CharacterList } from "../components";
-// import actions
 import { getCharacters } from '../actions';
 
 class CharacterListView extends React.Component {
-  constructor() {
-    super();
-  }
+  // constructor() {
+  //   super();
+
+  // }
 
   componentDidMount() {
-    // call our action
     this.props.getCharacters();
   }
 
   render() {
-    if (this.props.fetching) {
+    if (this.props.isLoading) {
       // return something here to indicate that you are fetching data
-      // <Loader type="Ball-Triangle" color="#00BFFF" height="90" width="60" />
+      
       return (
-        <div> Loading... </div>
+        <Loader type="Triangle" color="#7f7878" height="90" width="90" />
       )
     }
     return (
       <div className="CharactersList_wrapper">
-        <CharacterList characters={this.props.characters} />
+        {this.props.characters.results && <CharacterList characters={this.props.characters.results} />}
       </div>
     );
   }
@@ -35,9 +35,10 @@ class CharacterListView extends React.Component {
 // the characters and the fetching boolean
 
 const mapStateToProps = state => ({
-  isLoading: state.isLoading,
-  characters: state.characters,
-  error: state.error
+  
+  isLoading: state.charsReducer.isLoading,
+  characters: state.charsReducer.characters,
+  error: state.charsReducer.error
 });
 
 export default connect(
